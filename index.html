@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Completo + Guía</title>
+    <title>Gym Pro - Solución Final</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -78,14 +78,9 @@
         .det { color: #888; font-size: 0.85rem; }
 
         .btn-random {
-            background: #333;
-            border: none;
-            color: var(--primary);
-            padding: 8px;
-            border-radius: 50%;
-            margin-left: 10px;
-            font-size: 1rem;
-            cursor: pointer;
+            background: #333; border: none; color: var(--primary);
+            padding: 8px; border-radius: 50%; margin-left: 10px;
+            font-size: 1rem; cursor: pointer;
         }
 
         .input-peso {
@@ -94,7 +89,7 @@
             border-radius: 5px; padding: 4px; font-size: 0.9rem;
         }
 
-        /* --- SECCIÓN BIBLIOTECA INFERIOR --- */
+        /* BIBLIOTECA */
         .biblioteca-container { margin-top: 30px; text-align: center; }
         .btn-toggle-biblioteca {
             background: #222; color: var(--primary); border: 1px solid var(--primary);
@@ -105,8 +100,8 @@
             max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out;
             background: #111; margin-top: 10px; border-radius: 15px;
         }
-        .biblioteca-content.open { max-height: 1000px; padding: 15px 0; }
-        .guia-img { width: 100%; border-radius: 10px; border: 1px solid #444; }
+        .biblioteca-content.open { max-height: 2000px; padding: 15px 0; }
+        .guia-img { width: 95%; border-radius: 10px; border: 1px solid #444; }
 
         #clock-box {
             position: fixed; bottom: 20px; left: 50%;
@@ -131,9 +126,7 @@
 
     <div id="lunes" class="dia-contenedor active">
         <div class="dia-header">Piernas + Espalda</div>
-        <div class="bloque-abs" id="abs-lunes">
-            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
-        </div>
+        <div class="bloque-abs" id="abs-lunes"><span class="etapa-header etapa-abs">Etapa 1: Abdominales</span></div>
         <div class="bloque-piernas">
             <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
             <div class="ejercicio"><input type="checkbox" id="p1_check"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
@@ -174,7 +167,7 @@
     <div class="biblioteca-container">
         <button class="btn-toggle-biblioteca" onclick="toggleBiblioteca()">📖 Ver Guía de Ejercicios</button>
         <div id="biblioteca-seccion" class="biblioteca-content">
-            <img src="image_592a24.jpg" alt="Guía Abdominales" class="guia-img">
+            <img src="https://i.postimg.cc/85M0L77L/guia-abdominales.jpg" alt="Guía Abdominales" class="guia-img">
         </div>
     </div>
 
