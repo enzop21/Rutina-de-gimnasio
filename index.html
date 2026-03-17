@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Selector</title>
+    <title>Gym Pro - Persistente</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -26,11 +26,10 @@
 
         h1 { text-align: center; color: var(--primary); font-size: 1.4rem; margin-bottom: 15px; text-transform: uppercase; }
 
-        /* Estilos del Selector de Días */
         .selector-dias {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             background: #222;
             padding: 5px;
             border-radius: 12px;
@@ -40,42 +39,18 @@
             background: none;
             border: none;
             color: #888;
-            padding: 10px 15px;
+            padding: 10px;
             font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
             flex: 1;
-            transition: 0.3s;
+            border-radius: 8px;
         }
 
-        .tab-btn.active {
-            background: var(--primary);
-            color: #000;
-        }
+        .tab-btn.active { background: var(--primary); color: #000; }
 
-        /* Contenedores de contenido */
-        .dia-contenedor {
-            display: none; /* Ocultos por defecto */
-            background: #111;
-            border-radius: 20px;
-            padding: 15px;
-            border: 1px solid #333;
-        }
+        .dia-contenedor { display: none; background: #111; border-radius: 20px; padding: 15px; border: 1px solid #333; }
+        .dia-contenedor.active { display: block; }
 
-        .dia-contenedor.active {
-            display: block; /* Solo se muestra el activo */
-        }
-
-        .dia-header {
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-            color: var(--primary);
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 5px;
-        }
+        .dia-header { font-size: 1.1rem; font-weight: bold; text-align: center; margin-bottom: 10px; color: var(--primary); text-transform: uppercase; }
 
         .etapa-header {
             padding: 6px 12px;
@@ -84,10 +59,8 @@
             font-weight: bold;
             margin-top: 15px;
             margin-bottom: 10px;
-            display: inline-block;
+            display: block;
             text-transform: uppercase;
-            width: 100%;
-            box-sizing: border-box;
         }
 
         .etapa-abs { background: var(--color-abs); }
@@ -107,19 +80,25 @@
         .bloque-piernas .ejercicio { border-left: 4px solid var(--color-piernas); }
         .bloque-foco .ejercicio { border-left: 4px solid var(--color-especifico); }
 
-        input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            margin-right: 12px;
-            accent-color: var(--primary);
-        }
+        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primary); }
 
         .info { flex-grow: 1; }
         .nom { font-weight: bold; font-size: 1rem; display: block; color: #fff; }
         .det { color: #888; font-size: 0.85rem; }
-        .peso { color: #ffdd57; font-weight: bold; }
 
-        /* Timer Flotante */
+        /* Estilo para los inputs de peso */
+        .input-peso {
+            background: #333;
+            border: 1px solid #444;
+            color: #ffdd57;
+            font-weight: bold;
+            width: 50px;
+            text-align: center;
+            border-radius: 5px;
+            padding: 4px;
+            font-size: 0.9rem;
+        }
+
         #timer-box {
             position: fixed;
             bottom: 20px;
@@ -139,12 +118,12 @@
         }
 
         #time { font-family: monospace; font-size: 1.8rem; color: var(--primary); font-weight: bold; }
-        .btn { background: var(--primary); border: none; padding: 10px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; }
+        .btn { background: var(--primary); border: none; padding: 10px 15px; border-radius: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>🏋️ MI RUTINA SEMANAL</h1>
+    <h1>🏋️ MI RUTINA PRO</h1>
 
     <div class="selector-dias">
         <button class="tab-btn active" onclick="abrirDia('lunes', this)">LUN</button>
@@ -155,66 +134,52 @@
     <div id="lunes" class="dia-contenedor active">
         <div class="dia-header">Piernas + Espalda</div>
         <div class="bloque-abs">
-            <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45 seg</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Elevación de Piernas</span><div class="det">3 x 15</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45s</div></div></div>
         </div>
         <div class="bloque-piernas">
-            <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadillas</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Prensa</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sillón Cuádriceps</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Prensa</span><div class="det">3x12 | <input type="number" class="input-peso" id="p2" onchange="save(this)" placeholder="0"> kg</div></div></div>
         </div>
         <div class="bloque-foco">
-            <div class="etapa-header etapa-foco">Etapa 3: Espalda</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Remo Bajo</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Serrucho</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <span class="etapa-header etapa-foco">Etapa 3: Espalda</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4x10 | <input type="number" class="input-peso" id="p3" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Remo Bajo</span><div class="det">3x12 | <input type="number" class="input-peso" id="p4" onchange="save(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
     <div id="miercoles" class="dia-contenedor">
         <div class="dia-header">Piernas + Pecho</div>
         <div class="bloque-abs">
-            <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Bicicleta</span><div class="det">3 x 30</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Rueda Abdominal</span><div class="det">3 x 10</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Twist Ruso</span><div class="det">3 x 20</div></div></div>
         </div>
         <div class="bloque-piernas">
-            <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Estocadas</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Peso Muerto Rumano</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Camilla Isquios</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Estocadas</span><div class="det">3x12 | <input type="number" class="input-peso" id="p5" onchange="save(this)" placeholder="0"> kg</div></div></div>
         </div>
         <div class="bloque-foco">
-            <div class="etapa-header etapa-foco">Etapa 3: Pecho</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press de Banca</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press Inclinado</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Peck Deck</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
+            <span class="etapa-header etapa-foco">Etapa 3: Pecho</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press Banca</span><div class="det">4x10 | <input type="number" class="input-peso" id="p6" onchange="save(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
     <div id="viernes" class="dia-contenedor">
         <div class="dia-header">Piernas + Brazos</div>
         <div class="bloque-abs">
-            <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Lumbares</span><div class="det">3 x 15</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha Lateral</span><div class="det">3 x 30 seg</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Toque Talones</span><div class="det">3 x 30</div></div></div>
         </div>
         <div class="bloque-piernas">
-            <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Extensión Gemelos</span><div class="det">4 x 15 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Aductores</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3x12 | <input type="number" class="input-peso" id="p7" onchange="save(this)" placeholder="0"> kg</div></div></div>
         </div>
         <div class="bloque-foco">
-            <div class="etapa-header etapa-foco">Etapa 3: Brazos</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Bíceps con Barra</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tríceps Polea</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Martillo</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <span class="etapa-header etapa-foco">Etapa 3: Brazos</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Bíceps Barra</span><div class="det">3x12 | <input type="number" class="input-peso" id="p8" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tríceps Polea</span><div class="det">3x12 | <input type="number" class="input-peso" id="p9" onchange="save(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
@@ -225,22 +190,27 @@
     </div>
 
     <script>
-        // Lógica de Pestañas
+        // Guardar y Cargar Datos
+        function save(el) {
+            localStorage.setItem(el.id, el.value);
+        }
+
+        function loadSavedValues() {
+            const inputs = document.querySelectorAll('.input-peso');
+            inputs.forEach(input => {
+                const savedValue = localStorage.getItem(input.id);
+                if (savedValue) input.value = savedValue;
+            });
+        }
+
         function abrirDia(diaId, btn) {
-            // Ocultar todos los contenedores
-            const contenedores = document.querySelectorAll('.dia-contenedor');
-            contenedores.forEach(cont => cont.classList.remove('active'));
-
-            // Desactivar todos los botones
-            const botones = document.querySelectorAll('.tab-btn');
-            botones.forEach(b => b.classList.remove('active'));
-
-            // Mostrar el seleccionado y activar botón
+            document.querySelectorAll('.dia-contenedor').forEach(cont => cont.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(diaId).classList.add('active');
             btn.classList.add('active');
         }
 
-        // Lógica de Cronómetro
+        // Timer
         let t = 60, id = null;
         function upd() {
             let m = Math.floor(t/60), s = t%60;
@@ -257,6 +227,9 @@
             }
         }
         function resetT() { clearInterval(id); id = null; t = 60; upd(); document.getElementById('btnT').innerText = "START"; }
+
+        // Inicializar al cargar
+        window.onload = loadSavedValues;
     </script>
 </body>
 </html>
