@@ -3,228 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Rutina Gym</title>
+    <title>Gym Pro - Bloques</title>
     <style>
         :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --text: #eeeeee;
             --primary: #00d1b2;
-            --bg: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
-            --accent: #ffdd57;
+            /* Colores de Bloques */
+            --color-abs: #4a5568; 
+            --color-piernas: #2d6a4f;
+            --color-especifico: #2b6cb0;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 20px;
-            padding-bottom: 120px;
+            padding: 15px;
+            padding-bottom: 110px;
         }
 
-        h1 { text-align: center; color: var(--primary); font-size: 1.6rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .dia-seccion { margin-bottom: 35px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-        .dia-seccion:last-child { border-bottom: none; }
-        
-        .dia-titulo {
-            background: var(--primary);
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: block;
+        h1 { text-align: center; color: var(--primary); font-size: 1.4rem; margin-bottom: 25px; }
+
+        .dia-contenedor {
+            background: #111;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+        }
+
+        .dia-header {
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 1rem;
             text-align: center;
-        }
-
-        .ejercicio {
-            background: var(--card);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border-left: 5px solid var(--primary);
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-        }
-
-        input[type="checkbox"] {
-            width: 24px;
-            height: 24px;
-            margin-right: 15px;
-            accent-color: var(--primary);
-        }
-
-        .info-ejercicio { flex-grow: 1; }
-        .nombre { font-weight: bold; display: block; font-size: 1.1rem; color: #fff; }
-        .detalles { color: #aaa; font-size: 0.9rem; margin-top: 3px; }
-        .peso { color: var(--accent); font-weight: bold; }
-
-        /* Cronómetro Flotante */
-        #timer-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #282828;
-            padding: 15px;
-            border-radius: 50px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 2px solid var(--primary);
-            z-index: 1000;
-            width: 85%;
-            max-width: 320px;
-            justify-content: center;
-        }
-
-        #timer-display {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 2rem;
-            font-weight: bold;
+            margin-bottom: 15px;
             color: var(--primary);
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
         }
 
-        .btn-timer {
-            background: var(--primary);
-            border: none;
-            color: black;
-            padding: 10px 15px;
-            border-radius: 25px;
+        .etapa-header {
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            display: inline-block;
             text-transform: uppercase;
         }
 
-        .btn-reset {
-            background: #444;
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
+        /* Distintivos por etapa */
+        .etapa-abs { background: var(--color-abs); color: white; }
+        .etapa-piernas { background: var(--color-piernas); color: white; }
+        .etapa-foco { background: var(--color-especifico); color: white; }
+
+        .ejercicio {
+            background: var(--card);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            border: none;
+            border-left: 4px solid rgba(255,255,255,0.1);
         }
+
+        /* Bordes sutiles según la etapa para reforzar el color */
+        .bloque-abs .ejercicio { border-left-color: var(--color-abs); }
+        .bloque-piernas .ejercicio { border-left-color: var(--color-piernas); }
+        .bloque-foco .ejercicio { border-left-color: var(--color-especifico); }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            accent-color: var(--primary);
+        }
+
+        .info { flex-grow: 1; }
+        .nom { font-weight: bold; font-size: 1rem; display: block; }
+        .det { color: #888; font-size: 0.85rem; }
+        .peso { color: #ffdd57; font-weight: bold; }
+
+        /* Timer */
+        #timer-box {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            padding: 12px 20px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid var(--primary);
+            width: 85%;
+            max-width: 300px;
+            justify-content: space-between;
+        }
+
+        #time { font-family: monospace; font-size: 1.6rem; color: var(--primary); }
+        .btn { background: var(--primary); border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>🏋️ MI ENTRENAMIENTO</h1>
+    <h1>🚀 RUTINA SEMANAL</h1>
 
-    <div class="dia-seccion">
-        <div class="dia-titulo">Lunes: Piernas y Espalda</div>
+    <div class="dia-contenedor">
+        <div class="dia-header">Lunes: Piernas + Espalda</div>
         
-        <div class="ejercicio">
-            <input type="checkbox">
-            <div class="info-ejercicio">
-                <span class="nombre">Sentadillas</span>
-                <div class="detalles">4 x 10 | <span class="peso">-- kg</span></div>
-            </div>
+        <div class="bloque-abs">
+            <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha Isométrica</span><div class="det">3 x 45 seg</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Elevación de Piernas</span><div class="det">3 x 15</div></div></div>
         </div>
 
-        <div class="ejercicio">
-            <input type="checkbox">
-            <div class="info-ejercicio">
-                <span class="nombre">Remo con Barra</span>
-                <div class="detalles">4 x 10 | <span class="peso">-- kg</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dia-seccion">
-        <div class="dia-titulo">Miércoles: Piernas y Pecho</div>
-        
-        <div class="ejercicio">
-            <input type="checkbox">
-            <div class="info-ejercicio">
-                <span class="nombre">Prensa Inclinada</span>
-                <div class="detalles">4 x 12 | <span class="peso">-- kg</span></div>
-            </div>
+        <div class="bloque-piernas">
+            <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadillas</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Prensa</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sillón de Cuádriceps</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
         </div>
 
-        <div class="ejercicio">
-            <input type="checkbox">
-            <div class="info-ejercicio">
-                <span class="nombre">Press de Banca</span>
-                <div class="detalles">4 x 8 | <span class="peso">-- kg</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dia-seccion">
-        <div class="dia-titulo">Viernes: Piernas y Brazos</div>
-        
-        <div class="ejercicio">
-            <input type="checkbox">
-            <div class="info-ejercicio">
-                <span class="nombre">Estocadas</span>
-                <div class="detalles">3 x 12 | <span class="peso">-- kg</span></div>
-            </div>
-        </div>
-
-        <div class="ejercicio">
-            <input type="checkbox">
-            <div class="info-ejercicio">
-                <span class="nombre">Curl de Bíceps + Tríceps</span>
-                <div class="detalles">3 x 15 | <span class="peso">-- kg</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="timer-container">
-        <div id="timer-display">01:00</div>
-        <button class="btn-timer" onclick="toggleTimer()" id="btn-label">START</button>
-        <button class="btn-reset" onclick="resetTimer()">R</button>
-    </div>
-
-    <script>
-        let timeLeft = 60;
-        let timerId = null;
-
-        function updateDisplay() {
-            const mins = Math.floor(timeLeft / 60);
-            const secs = timeLeft % 60;
-            document.getElementById('timer-display').innerText = 
-                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        function toggleTimer() {
-            if (timerId) {
-                clearInterval(timerId);
-                timerId = null;
-                document.getElementById('btn-label').innerText = "START";
-            } else {
-                document.getElementById('btn-label').innerText = "PAUSA";
-                timerId = setInterval(() => {
-                    if (timeLeft > 0) {
-                        timeLeft--;
-                        updateDisplay();
-                    } else {
-                        clearInterval(timerId);
-                        timerId = null;
-                        alert("¡Tiempo cumplido!");
-                        resetTimer();
-                    }
-                }, 1000);
-            }
-        }
-
-        function resetTimer() {
-            clearInterval(timerId);
-            timerId = null;
-            timeLeft = 60;
-            updateDisplay();
-            document.getElementById('btn-label').innerText = "START";
-        }
-    </script>
-
-</body>
-</html>
+        <div class="bloque-foco">
+            <div class="etapa-header etapa-foco">Etapa 3: Espalda</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tirón al Pecho</span>
