@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Dinámico + Guía</title>
+    <title>Gym Pro - Dinámico Limpio</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -48,35 +48,13 @@
 
         .dia-header { font-size: 1.1rem; font-weight: bold; text-align: center; margin-bottom: 10px; color: var(--primary); text-transform: uppercase; }
 
-        /* Contenedor Etapa con Botón de Imagen */
-        .etapa-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--color-abs);
-            border-radius: 8px;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            padding-right: 10px;
-        }
-
         .etapa-header {
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
+            padding: 6px 12px; border-radius: 8px; font-size: 0.8rem;
+            font-weight: bold; margin-top: 15px; margin-bottom: 10px;
+            display: block; text-transform: uppercase;
         }
 
-        .btn-guia {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            border-radius: 5px;
-            padding: 4px 8px;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
+        .etapa-abs { background: var(--color-abs); }
         .etapa-piernas { background: var(--color-piernas); }
         .etapa-foco { background: var(--color-especifico); }
 
@@ -116,37 +94,6 @@
             border-radius: 5px; padding: 4px; font-size: 0.9rem;
         }
 
-        /* MODAL GUIA */
-        #modal-guia {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        #modal-guia img {
-            max-width: 95%;
-            max-height: 80%;
-            border-radius: 10px;
-            border: 2px solid var(--primary);
-        }
-
-        .btn-cerrar {
-            margin-top: 20px;
-            background: var(--primary);
-            color: black;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
         #clock-box {
             position: fixed; bottom: 20px; left: 50%;
             transform: translateX(-50%); background: #1a1a1a;
@@ -171,44 +118,36 @@
 
     <div id="lunes" class="dia-contenedor active">
         <div class="dia-header">Piernas + Espalda</div>
-        <div class="bloque-abs">
-            <div class="etapa-wrapper">
-                <span class="etapa-header">Etapa 1: Abdominales</span>
-                <button class="btn-guia" onclick="mostrarGuia()">👁️ Guía</button>
-            </div>
-            <div id="abs-lunes"></div>
+        <div class="bloque-abs" id="abs-lunes">
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
         </div>
         <div class="bloque-piernas">
             <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
             <div class="ejercicio"><input type="checkbox" id="p1_check"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="p2_check"><div class="info"><span class="nom">Prensa</span><div class="det">3x12 | <input type="number" class="input-peso" id="p2" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+        <div class="bloque-foco">
+            <span class="etapa-header etapa-foco">Etapa 3: Espalda</span>
+            <div class="ejercicio"><input type="checkbox" id="p3_check"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4x10 | <input type="number" class="input-peso" id="p3" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
     <div id="miercoles" class="dia-contenedor">
         <div class="dia-header">Piernas + Pecho</div>
-        <div class="bloque-abs">
-            <div class="etapa-wrapper">
-                <span class="etapa-header">Etapa 1: Abdominales</span>
-                <button class="btn-guia" onclick="mostrarGuia()">👁️ Guía</button>
-            </div>
-            <div id="abs-miercoles"></div>
+        <div class="bloque-abs" id="abs-miercoles"><span class="etapa-header etapa-abs">Etapa 1: Abdominales</span></div>
+        <div class="bloque-piernas">
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox" id="p4_check"><div class="info"><span class="nom">Estocadas</span><div class="det">3x12 | <input type="number" class="input-peso" id="p4" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
     <div id="viernes" class="dia-contenedor">
         <div class="dia-header">Piernas + Brazos</div>
-        <div class="bloque-abs">
-            <div class="etapa-wrapper">
-                <span class="etapa-header">Etapa 1: Abdominales</span>
-                <button class="btn-guia" onclick="mostrarGuia()">👁️ Guía</button>
-            </div>
-            <div id="abs-viernes"></div>
+        <div class="bloque-abs" id="abs-viernes"><span class="etapa-header etapa-abs">Etapa 1: Abdominales</span></div>
+        <div class="bloque-piernas">
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox" id="p5_check"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3x12 | <input type="number" class="input-peso" id="p5" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
-    </div>
-
-    <div id="modal-guia" onclick="ocultarGuia()">
-        <img src="image_59224b.jpg" alt="Guía Abdominales">
-        <button class="btn-cerrar">CERRAR</button>
     </div>
 
     <div id="clock-box"><div id="clock-display">00:00:00</div></div>
@@ -231,9 +170,6 @@
                 { nom: "Russian Twists", det: "3 x 20" }
             ]
         };
-
-        function mostrarGuia() { document.getElementById('modal-guia').style.display = 'flex'; }
-        function ocultarGuia() { document.getElementById('modal-guia').style.display = 'none'; }
 
         function getAleatorio(tipo) {
             const lista = dbAbs[tipo];
@@ -264,11 +200,9 @@
         function inicializarAbs() {
             ['lunes', 'miercoles', 'viernes'].forEach(dia => {
                 const contenedor = document.getElementById(`abs-${dia}`);
-                if(contenedor) {
-                    contenedor.innerHTML = crearHtmlEjercicio('estabilidad', dia) + 
-                                         crearHtmlEjercicio('fuerza', dia) + 
-                                         crearHtmlEjercicio('intensidad', dia);
-                }
+                contenedor.innerHTML += crearHtmlEjercicio('estabilidad', dia);
+                contenedor.innerHTML += crearHtmlEjercicio('fuerza', dia);
+                contenedor.innerHTML += crearHtmlEjercicio('intensidad', dia);
             });
         }
 
