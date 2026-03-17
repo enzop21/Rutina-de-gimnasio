@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Dinámico Limpio</title>
+    <title>Gym Pro - Dinámico + Biblioteca</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -21,7 +21,7 @@
             color: var(--text);
             margin: 0;
             padding: 15px;
-            padding-bottom: 100px;
+            padding-bottom: 120px; /* Espacio extra para el botón inferior */
         }
 
         .header-container { text-align: center; margin-bottom: 20px; }
@@ -94,6 +94,45 @@
             border-radius: 5px; padding: 4px; font-size: 0.9rem;
         }
 
+        /* --- SECCIÓN BIBLIOTECA INFERIOR --- */
+        .biblioteca-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn-toggle-biblioteca {
+            background: #222;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .biblioteca-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: #111;
+            margin-top: 10px;
+            border-radius: 15px;
+        }
+
+        .biblioteca-content.open {
+            max-height: 1000px; /* Suficiente para la imagen */
+            padding: 15px 0;
+        }
+
+        .guia-img {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+
         #clock-box {
             position: fixed; bottom: 20px; left: 50%;
             transform: translateX(-50%); background: #1a1a1a;
@@ -124,29 +163,23 @@
         <div class="bloque-piernas">
             <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
             <div class="ejercicio"><input type="checkbox" id="p1_check"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
-            <div class="ejercicio"><input type="checkbox" id="p2_check"><div class="info"><span class="nom">Prensa</span><div class="det">3x12 | <input type="number" class="input-peso" id="p2" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
-        </div>
-        <div class="bloque-foco">
-            <span class="etapa-header etapa-foco">Etapa 3: Espalda</span>
-            <div class="ejercicio"><input type="checkbox" id="p3_check"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4x10 | <input type="number" class="input-peso" id="p3" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
     <div id="miercoles" class="dia-contenedor">
         <div class="dia-header">Piernas + Pecho</div>
         <div class="bloque-abs" id="abs-miercoles"><span class="etapa-header etapa-abs">Etapa 1: Abdominales</span></div>
-        <div class="bloque-piernas">
-            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
-            <div class="ejercicio"><input type="checkbox" id="p4_check"><div class="info"><span class="nom">Estocadas</span><div class="det">3x12 | <input type="number" class="input-peso" id="p4" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
-        </div>
     </div>
 
     <div id="viernes" class="dia-contenedor">
         <div class="dia-header">Piernas + Brazos</div>
         <div class="bloque-abs" id="abs-viernes"><span class="etapa-header etapa-abs">Etapa 1: Abdominales</span></div>
-        <div class="bloque-piernas">
-            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
-            <div class="ejercicio"><input type="checkbox" id="p5_check"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3x12 | <input type="number" class="input-peso" id="p5" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+    </div>
+
+    <div class="biblioteca-container">
+        <button class="btn-toggle-biblioteca" onclick="toggleBiblioteca()">📖 Ver Guía de Ejercicios</button>
+        <div id="biblioteca-seccion" class="biblioteca-content">
+            <img src="image_592a24.jpg" alt="Guía Abdominales" class="guia-img">
         </div>
     </div>
 
@@ -170,6 +203,13 @@
                 { nom: "Russian Twists", det: "3 x 20" }
             ]
         };
+
+        function toggleBiblioteca() {
+            const seccion = document.getElementById('biblioteca-seccion');
+            seccion.classList.toggle('open');
+            const btn = document.querySelector('.btn-toggle-biblioteca');
+            btn.innerText = seccion.classList.contains('open') ? "📖 Cerrar Guía" : "📖 Ver Guía de Ejercicios";
+        }
 
         function getAleatorio(tipo) {
             const lista = dbAbs[tipo];
@@ -200,9 +240,11 @@
         function inicializarAbs() {
             ['lunes', 'miercoles', 'viernes'].forEach(dia => {
                 const contenedor = document.getElementById(`abs-${dia}`);
-                contenedor.innerHTML += crearHtmlEjercicio('estabilidad', dia);
-                contenedor.innerHTML += crearHtmlEjercicio('fuerza', dia);
-                contenedor.innerHTML += crearHtmlEjercicio('intensidad', dia);
+                if(contenedor) {
+                    contenedor.innerHTML += crearHtmlEjercicio('estabilidad', dia);
+                    contenedor.innerHTML += crearHtmlEjercicio('fuerza', dia);
+                    contenedor.innerHTML += crearHtmlEjercicio('intensidad', dia);
+                }
             });
         }
 
@@ -212,11 +254,6 @@
         setInterval(updateClock, 1000); updateClock();
 
         function savePeso(el) { localStorage.setItem(el.id, el.value); }
-        function load() {
-            document.querySelectorAll('.input-peso').forEach(i => {
-                const s = localStorage.getItem(i.id); if (s) i.value = s;
-            });
-        }
 
         function abrirDia(diaId, btn) {
             document.querySelectorAll('.dia-contenedor').forEach(cont => cont.classList.remove('active'));
@@ -225,7 +262,7 @@
             btn.classList.add('active');
         }
 
-        window.onload = () => { inicializarAbs(); load(); };
+        window.onload = () => { inicializarAbs(); };
     </script>
 </body>
 </html>
