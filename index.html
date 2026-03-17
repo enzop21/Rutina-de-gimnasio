@@ -88,4 +88,138 @@
 
         input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primary); }
 
-        .info { flex-grow: 1
+        .info { flex-grow: 1; }
+        .nom { font-weight: bold; font-size: 1rem; display: block; color: #fff; }
+        .det { color: #888; font-size: 0.85rem; }
+
+        .input-peso {
+            background: #333;
+            border: 1px solid #444;
+            color: #ffdd57;
+            font-weight: bold;
+            width: 55px;
+            text-align: center;
+            border-radius: 5px;
+            padding: 4px;
+            font-size: 0.9rem;
+        }
+
+        #clock-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            padding: 10px 30px;
+            border-radius: 40px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        #clock-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>🏋️ MI RUTINA PRO</h1>
+    </div>
+
+    <div class="selector-dias">
+        <button class="tab-btn active" onclick="abrirDia('lunes', this)">LUN</button>
+        <button class="tab-btn" onclick="abrirDia('miercoles', this)">MIE</button>
+        <button class="tab-btn" onclick="abrirDia('viernes', this)">VIE</button>
+    </div>
+
+    <div id="lunes" class="dia-contenedor active">
+        <div class="dia-header">Piernas + Espalda</div>
+        <div class="bloque-abs">
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
+            <div class="ejercicio"><input type="checkbox" id="c1" onchange="saveCheck(this)"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c2" onchange="saveCheck(this)"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45s</div></div></div>
+        </div>
+        <div class="bloque-piernas">
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox" id="c3" onchange="saveCheck(this)"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c4" onchange="saveCheck(this)"><div class="info"><span class="nom">Prensa</span><div class="det">3x12 | <input type="number" class="input-peso" id="p2" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+        <div class="bloque-foco">
+            <span class="etapa-header etapa-foco">Etapa 3: Espalda</span>
+            <div class="ejercicio"><input type="checkbox" id="c5" onchange="saveCheck(this)"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4x10 | <input type="number" class="input-peso" id="p3" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c6" onchange="saveCheck(this)"><div class="info"><span class="nom">Remo Bajo</span><div class="det">3x12 | <input type="number" class="input-peso" id="p4" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+    </div>
+
+    <div id="miercoles" class="dia-contenedor">
+        <div class="dia-header">Piernas + Pecho</div>
+        <div class="bloque-abs">
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
+            <div class="ejercicio"><input type="checkbox" id="c7" onchange="saveCheck(this)"><div class="info"><span class="nom">Bicicleta</span><div class="det">3 x 30</div></div></div>
+        </div>
+        <div class="bloque-piernas">
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox" id="c8" onchange="saveCheck(this)"><div class="info"><span class="nom">Estocadas</span><div class="det">3x12 | <input type="number" class="input-peso" id="p5" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+        <div class="bloque-foco">
+            <span class="etapa-header etapa-foco">Etapa 3: Pecho</span>
+            <div class="ejercicio"><input type="checkbox" id="c9" onchange="saveCheck(this)"><div class="info"><span class="nom">Press Banca</span><div class="det">4x10 | <input type="number" class="input-peso" id="p6" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+    </div>
+
+    <div id="viernes" class="dia-contenedor">
+        <div class="dia-header">Piernas + Brazos</div>
+        <div class="bloque-abs">
+            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
+            <div class="ejercicio"><input type="checkbox" id="c10" onchange="saveCheck(this)"><div class="info"><span class="nom">Lumbares</span><div class="det">3 x 15</div></div></div>
+        </div>
+        <div class="bloque-piernas">
+            <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
+            <div class="ejercicio"><input type="checkbox" id="c11" onchange="saveCheck(this)"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3x12 | <input type="number" class="input-peso" id="p7" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+        <div class="bloque-foco">
+            <span class="etapa-header etapa-foco">Etapa 3: Brazos</span>
+            <div class="ejercicio"><input type="checkbox" id="c12" onchange="saveCheck(this)"><div class="info"><span class="nom">Bíceps Barra</span><div class="det">3x12 | <input type="number" class="input-peso" id="p8" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c13" onchange="saveCheck(this)"><div class="info"><span class="nom">Tríceps Polea</span><div class="det">3x12 | <input type="number" class="input-peso" id="p9" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+        </div>
+    </div>
+
+    <div id="clock-box">
+        <div id="clock-display">00:00:00</div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-display').innerText = now.toLocaleTimeString('es-AR', {hour12:false});
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        function savePeso(el) { localStorage.setItem(el.id, el.value); }
+        function saveCheck(el) { localStorage.setItem(el.id, el.checked); }
+
+        function load() {
+            document.querySelectorAll('.input-peso').forEach(i => {
+                const s = localStorage.getItem(i.id); if (s) i.value = s;
+            });
+            document.querySelectorAll('input[type="checkbox"]').forEach(c => {
+                const s = localStorage.getItem(c.id); if (s) c.checked = (s === 'true');
+            });
+        }
+
+        function abrirDia(diaId, btn) {
+            document.querySelectorAll('.dia-contenedor').forEach(cont => cont.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(diaId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        window.onload = load;
+    </script>
+</body>
+</html>
