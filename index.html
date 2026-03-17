@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Visual</title>
+    <title>Gym Pro - Guía Flotante</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -48,65 +48,103 @@
 
         .dia-header { font-size: 1.1rem; font-weight: bold; text-align: center; margin-bottom: 10px; color: var(--primary); text-transform: uppercase; }
 
-        .etapa-header {
-            padding: 6px 12px; border-radius: 8px; font-size: 0.8rem;
-            font-weight: bold; margin-top: 15px; margin-bottom: 10px;
-            display: block; text-transform: uppercase;
+        /* Contenedor del título de etapa con botón de imagen */
+        .etapa-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--color-abs);
+            border-radius: 8px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding-right: 8px;
         }
 
-        .etapa-abs { background: var(--color-abs); }
+        .etapa-header {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-        /* Estilo para los ejercicios con imagen */
+        .btn-ver-guia {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .etapa-piernas { background: var(--color-piernas); margin-top: 15px; margin-bottom: 10px; border-radius: 8px; display: block; }
+        .etapa-foco { background: var(--color-especifico); margin-top: 15px; margin-bottom: 10px; border-radius: 8px; display: block; }
+
         .ejercicio {
             background: var(--card);
-            padding: 10px;
+            padding: 12px;
             border-radius: 10px;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            border-left: 4px solid transparent;
         }
 
-        .bloque-abs .ejercicio { border-left-color: var(--color-abs); }
+        .bloque-abs .ejercicio { border-left: 4px solid var(--color-abs); }
+        .bloque-piernas .ejercicio { border-left: 4px solid var(--color-piernas); }
+        .bloque-foco .ejercicio { border-left: 4px solid var(--color-especifico); }
 
-        .img-guia {
-            width: 70px;
-            height: 50px;
-            background-color: #fff;
-            border-radius: 6px;
-            margin-right: 12px;
-            object-fit: contain;
-            border: 1px solid #444;
+        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primary); }
+
+        .info { flex-grow: 1; }
+        .nom { font-weight: bold; font-size: 1rem; display: block; color: #fff; }
+        .det { color: #888; font-size: 0.85rem; }
+
+        .input-peso {
+            background: #333; border: 1px solid #444; color: #ffdd57;
+            font-weight: bold; width: 55px; text-align: center;
+            border-radius: 5px; padding: 4px; font-size: 0.9rem;
         }
 
-        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 10px; accent-color: var(--primary); }
-
-        .info { flex-grow: 1; min-width: 0; }
-        .nom { font-weight: bold; font-size: 0.9rem; display: block; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .det { color: #888; font-size: 0.75rem; }
-
-        .btn-random {
-            background: #333;
-            border: none;
-            color: var(--primary);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            margin-left: 8px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
+        /* MODAL PARA LA IMAGEN */
+        #modal-guia {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
             justify-content: center;
+            align-items: center;
+        }
+
+        #modal-guia img {
+            max-width: 95%;
+            max-height: 80%;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+        }
+
+        .btn-cerrar-modal {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            background: var(--primary);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
         }
 
         #clock-box {
             position: fixed; bottom: 20px; left: 50%;
             transform: translateX(-50%); background: #1a1a1a;
-            padding: 8px 25px; border-radius: 40px;
+            padding: 10px 30px; border-radius: 40px;
             border: 2px solid var(--primary); z-index: 1000;
         }
 
-        #clock-display { font-family: monospace; font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        #clock-display { font-family: monospace; font-size: 1.8rem; font-weight: bold; color: var(--primary); }
     </style>
 </head>
 <body>
@@ -123,89 +161,51 @@
 
     <div id="lunes" class="dia-contenedor active">
         <div class="dia-header">Piernas + Espalda</div>
-        <div class="bloque-abs" id="abs-lunes">
-            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
+        <div class="bloque-abs">
+            <div class="etapa-wrapper">
+                <span class="etapa-header">Etapa 1: Abdominales</span>
+                <button class="btn-ver-guia" onclick="abrirImagen()">🖼️ VER GUÍA</button>
+            </div>
+            <div class="ejercicio"><input type="checkbox" id="c1" onchange="saveCheck(this)"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c2" onchange="saveCheck(this)"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45s</div></div></div>
         </div>
-    </div>
+        </div>
 
-    <div id="miercoles" class="dia-contenedor">
-        <div class="dia-header">Piernas + Pecho</div>
-        <div class="bloque-abs" id="abs-miercoles">
-            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
-        </div>
-    </div>
-
-    <div id="viernes" class="dia-contenedor">
-        <div class="dia-header">Piernas + Brazos</div>
-        <div class="bloque-abs" id="abs-viernes">
-            <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
-        </div>
+    <div id="modal-guia" onclick="cerrarImagen()">
+        <button class="btn-cerrar-modal">CERRAR</button>
+        <img src="tu_imagen_aqui.jpg" id="img-referencia" alt="Guía Abdominales">
     </div>
 
     <div id="clock-box"><div id="clock-display">00:00:00</div></div>
 
     <script>
-        // BASE DE DATOS CON "PLACEMARKS" DE IMAGEN (Simulando recortes de tu tabla)
-        // Nota: En un entorno real, usarías URLs de las imágenes recortadas.
-        const dbAbs = {
-            estabilidad: [
-                { nom: "Plank", det: "3 x 45s", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Plank" },
-                { nom: "Dead Bug", det: "3 x 15", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Dead+Bug" },
-                { nom: "Rueda Abd.", det: "3 x 10", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Ab+Wheel" }
-            ],
-            fuerza: [
-                { nom: "Elev. Piernas", det: "3 x 12", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Leg+Raise" },
-                { nom: "Crunch 90°", det: "3 x 15", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Crunch+90" },
-                { nom: "Crunch Disco", det: "3 x 15", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Crunch+Disco" }
-            ],
-            intensidad: [
-                { nom: "Mt. Climbers", det: "3 x 40s", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Climbers" },
-                { nom: "V-Ups", det: "3 x 12", img: "https://via.placeholder.com/150/FFFFFF/000000?text=V-Ups" },
-                { nom: "Russian Twist", det: "3 x 20", img: "https://via.placeholder.com/150/FFFFFF/000000?text=Twists" }
-            ]
-        };
-
-        function getAleatorio(tipo) {
-            const lista = dbAbs[tipo];
-            return lista[Math.floor(Math.random() * lista.length)];
+        // Función para abrir la imagen
+        function abrirImagen() {
+            // Reemplaza "tu_imagen_aqui.jpg" con el nombre real de tu archivo
+            document.getElementById('img-referencia').src = "image_59224b.jpg"; 
+            document.getElementById('modal-guia').style.display = 'flex';
         }
 
-        function crearHtmlEjercicio(tipo, dia) {
-            const ej = getAleatorio(tipo);
-            const idUnico = `abs-${dia}-${tipo}`;
-            return `
-                <div class="ejercicio" id="cont-${idUnico}">
-                    <input type="checkbox" id="check-${idUnico}">
-                    <img src="${ej.img}" class="img-guia" id="img-${idUnico}">
-                    <div class="info">
-                        <span class="nom" id="nom-${idUnico}">${ej.nom}</span>
-                        <div class="det" id="det-${idUnico}">${ej.det}</div>
-                    </div>
-                    <button class="btn-random" onclick="cambiarEjercicio('${tipo}', '${idUnico}')">🔄</button>
-                </div>`;
-        }
-
-        function cambiarEjercicio(tipo, idUnico) {
-            const nuevo = getAleatorio(tipo);
-            document.getElementById(`nom-${idUnico}`).innerText = nuevo.nom;
-            document.getElementById(`det-${idUnico}`).innerText = nuevo.det;
-            document.getElementById(`img-${idUnico}`).src = nuevo.img;
-            document.getElementById(`check-${idUnico}`).checked = false;
-        }
-
-        function inicializarAbs() {
-            ['lunes', 'miercoles', 'viernes'].forEach(dia => {
-                const contenedor = document.getElementById(`abs-${dia}`);
-                contenedor.innerHTML += crearHtmlEjercicio('estabilidad', dia);
-                contenedor.innerHTML += crearHtmlEjercicio('fuerza', dia);
-                contenedor.innerHTML += crearHtmlEjercicio('intensidad', dia);
-            });
+        function cerrarImagen() {
+            document.getElementById('modal-guia').style.display = 'none';
         }
 
         function updateClock() {
             document.getElementById('clock-display').innerText = new Date().toLocaleTimeString('es-AR', {hour12:false});
         }
         setInterval(updateClock, 1000); updateClock();
+
+        function savePeso(el) { localStorage.setItem(el.id, el.value); }
+        function saveCheck(el) { localStorage.setItem(el.id, el.checked); }
+
+        function load() {
+            document.querySelectorAll('.input-peso').forEach(i => {
+                const s = localStorage.getItem(i.id); if (s) i.value = s;
+            });
+            document.querySelectorAll('input[type="checkbox"]').forEach(c => {
+                const s = localStorage.getItem(c.id); if (s) c.checked = (s === 'true');
+            });
+        }
 
         function abrirDia(diaId, btn) {
             document.querySelectorAll('.dia-contenedor').forEach(cont => cont.classList.remove('active'));
@@ -214,7 +214,7 @@
             btn.classList.add('active');
         }
 
-        window.onload = inicializarAbs;
+        window.onload = load;
     </script>
 </body>
 </html>
