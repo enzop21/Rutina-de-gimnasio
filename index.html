@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Bloques</title>
+    <title>Gym Pro - Bloques Totales</title>
     <style>
         :root {
             --bg: #0f0f0f;
             --card: #1a1a1a;
             --text: #eeeeee;
             --primary: #00d1b2;
-            /* Colores de Bloques */
             --color-abs: #4a5568; 
             --color-piernas: #2d6a4f;
             --color-especifico: #2b6cb0;
@@ -22,16 +21,16 @@
             color: var(--text);
             margin: 0;
             padding: 15px;
-            padding-bottom: 110px;
+            padding-bottom: 120px;
         }
 
-        h1 { text-align: center; color: var(--primary); font-size: 1.4rem; margin-bottom: 25px; }
+        h1 { text-align: center; color: var(--primary); font-size: 1.4rem; margin-bottom: 25px; text-transform: uppercase; }
 
         .dia-contenedor {
             background: #111;
             border-radius: 20px;
             padding: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             border: 1px solid #333;
         }
 
@@ -47,17 +46,18 @@
         }
 
         .etapa-header {
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
             margin-top: 15px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: inline-block;
             text-transform: uppercase;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        /* Distintivos por etapa */
         .etapa-abs { background: var(--color-abs); color: white; }
         .etapa-piernas { background: var(--color-piernas); color: white; }
         .etapa-foco { background: var(--color-especifico); color: white; }
@@ -69,30 +69,28 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            border-left: 4px solid rgba(255,255,255,0.1);
         }
 
-        /* Bordes sutiles según la etapa para reforzar el color */
-        .bloque-abs .ejercicio { border-left-color: var(--color-abs); }
-        .bloque-piernas .ejercicio { border-left-color: var(--color-piernas); }
-        .bloque-foco .ejercicio { border-left-color: var(--color-especifico); }
+        .bloque-abs .ejercicio { border-left: 4px solid var(--color-abs); }
+        .bloque-piernas .ejercicio { border-left: 4px solid var(--color-piernas); }
+        .bloque-foco .ejercicio { border-left: 4px solid var(--color-especifico); }
 
         input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             margin-right: 12px;
             accent-color: var(--primary);
         }
 
         .info { flex-grow: 1; }
-        .nom { font-weight: bold; font-size: 1rem; display: block; }
+        .nom { font-weight: bold; font-size: 1rem; display: block; color: #fff; }
         .det { color: #888; font-size: 0.85rem; }
         .peso { color: #ffdd57; font-weight: bold; }
 
-        /* Timer */
+        /* Timer Flotante */
         #timer-box {
             position: fixed;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: #222;
@@ -100,20 +98,22 @@
             border-radius: 40px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             border: 2px solid var(--primary);
             width: 85%;
-            max-width: 300px;
+            max-width: 320px;
             justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            z-index: 999;
         }
 
-        #time { font-family: monospace; font-size: 1.6rem; color: var(--primary); }
-        .btn { background: var(--primary); border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; }
+        #time { font-family: monospace; font-size: 1.8rem; color: var(--primary); font-weight: bold; }
+        .btn { background: var(--primary); border: none; padding: 10px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <h1>🚀 RUTINA SEMANAL</h1>
+    <h1>🏋️ MI RUTINA SEMANAL</h1>
 
     <div class="dia-contenedor">
         <div class="dia-header">Lunes: Piernas + Espalda</div>
@@ -121,7 +121,7 @@
         <div class="bloque-abs">
             <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha Isométrica</span><div class="det">3 x 45 seg</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45 seg</div></div></div>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Elevación de Piernas</span><div class="det">3 x 15</div></div></div>
         </div>
 
@@ -129,9 +129,90 @@
             <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadillas</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
             <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Prensa</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sillón de Cuádriceps</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sillón Cuádriceps</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
         </div>
 
         <div class="bloque-foco">
             <div class="etapa-header etapa-foco">Etapa 3: Espalda</div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tirón al Pecho</span>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Remo Bajo</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Serrucho</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+        </div>
+    </div>
+
+    <div class="dia-contenedor">
+        <div class="dia-header">Miércoles: Piernas + Pecho</div>
+        
+        <div class="bloque-abs">
+            <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Bicicleta</span><div class="det">3 x 30</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Rueda Abdominal</span><div class="det">3 x 10</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Twist Ruso</span><div class="det">3 x 20</div></div></div>
+        </div>
+
+        <div class="bloque-piernas">
+            <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Estocadas</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Peso Muerto Rumano</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Camilla Isquios</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+        </div>
+
+        <div class="bloque-foco">
+            <div class="etapa-header etapa-foco">Etapa 3: Pecho</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press de Banca</span><div class="det">4 x 10 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press Inclinado</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Cruce Poleas / Peck Deck</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
+        </div>
+    </div>
+
+    <div class="dia-contenedor">
+        <div class="dia-header">Viernes: Piernas + Brazos</div>
+        
+        <div class="bloque-abs">
+            <div class="etapa-header etapa-abs">Etapa 1: Abdominales</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Lumbares</span><div class="det">3 x 15</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha Lateral</span><div class="det">3 x 30 seg</div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Toque Talones</span><div class="det">3 x 30</div></div></div>
+        </div>
+
+        <div class="bloque-piernas">
+            <div class="etapa-header etapa-piernas">Etapa 2: Piernas</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Extensión Gemelos</span><div class="det">4 x 15 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Aductores</span><div class="det">3 x 15 | <span class="peso">--kg</span></div></div></div>
+        </div>
+
+        <div class="bloque-foco">
+            <div class="etapa-header etapa-foco">Etapa 3: Brazos</div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Curl Barra (Bíceps)</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press Francés (Tríceps)</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Martillo / Polea</span><div class="det">3 x 12 | <span class="peso">--kg</span></div></div></div>
+        </div>
+    </div>
+
+    <div id="timer-box">
+        <div id="time">01:00</div>
+        <button class="btn" onclick="toggleT()" id="btnT">START</button>
+        <button class="btn" style="background:#444; color:white;" onclick="resetT()">R</button>
+    </div>
+
+    <script>
+        let t = 60, id = null;
+        function upd() {
+            let m = Math.floor(t/60), s = t%60;
+            document.getElementById('time').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+        function toggleT() {
+            if(id) { clearInterval(id); id = null; document.getElementById('btnT').innerText = "START"; }
+            else {
+                document.getElementById('btnT').innerText = "PAUSA";
+                id = setInterval(() => {
+                    if(t > 0) { t--; upd(); }
+                    else { clearInterval(id); id = null; alert("¡Serie terminada!"); resetT(); }
+                }, 1000);
+            }
+        }
+        function resetT() { clearInterval(id); id = null; t = 60; upd(); document.getElementById('btnT').innerText = "START"; }
+    </script>
+</body>
+</html>
