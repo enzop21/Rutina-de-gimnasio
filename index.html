@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pro - Persistente</title>
+    <title>Gym Pro - Reset</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -21,10 +21,31 @@
             color: var(--text);
             margin: 0;
             padding: 15px;
-            padding-bottom: 120px;
+            padding-bottom: 100px;
         }
 
-        h1 { text-align: center; color: var(--primary); font-size: 1.4rem; margin-bottom: 15px; text-transform: uppercase; }
+        /* Cabecera con título y botón */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        h1 { color: var(--primary); font-size: 1.3rem; margin: 0; text-transform: uppercase; }
+
+        .btn-reset-top {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
 
         .selector-dias {
             display: flex;
@@ -86,44 +107,45 @@
         .nom { font-weight: bold; font-size: 1rem; display: block; color: #fff; }
         .det { color: #888; font-size: 0.85rem; }
 
-        /* Estilo para los inputs de peso */
         .input-peso {
             background: #333;
             border: 1px solid #444;
             color: #ffdd57;
             font-weight: bold;
-            width: 50px;
+            width: 55px;
             text-align: center;
             border-radius: 5px;
             padding: 4px;
             font-size: 0.9rem;
         }
 
-        #timer-box {
+        #clock-box {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #222;
-            padding: 12px 20px;
+            background: #1a1a1a;
+            padding: 10px 30px;
             border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
             border: 2px solid var(--primary);
-            width: 85%;
-            max-width: 320px;
-            justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 1000;
         }
 
-        #time { font-family: monospace; font-size: 1.8rem; color: var(--primary); font-weight: bold; }
-        .btn { background: var(--primary); border: none; padding: 10px 15px; border-radius: 15px; font-weight: bold; }
+        #clock-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
 
-    <h1>🏋️ MI RUTINA PRO</h1>
+    <div class="header-container">
+        <h1>🏋️ MI RUTINA PRO</h1>
+        <button class="btn-reset-top" onclick="clearAll()">🗑️ RESET</button>
+    </div>
 
     <div class="selector-dias">
         <button class="tab-btn active" onclick="abrirDia('lunes', this)">LUN</button>
@@ -135,18 +157,18 @@
         <div class="dia-header">Piernas + Espalda</div>
         <div class="bloque-abs">
             <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45s</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c1" onchange="saveCheck(this)"><div class="info"><span class="nom">Crunch Abdominal</span><div class="det">3 x 20</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c2" onchange="saveCheck(this)"><div class="info"><span class="nom">Plancha</span><div class="det">3 x 45s</div></div></div>
         </div>
         <div class="bloque-piernas">
             <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="save(this)" placeholder="0"> kg</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Prensa</span><div class="det">3x12 | <input type="number" class="input-peso" id="p2" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c3" onchange="saveCheck(this)"><div class="info"><span class="nom">Sentadillas</span><div class="det">4x10 | <input type="number" class="input-peso" id="p1" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c4" onchange="saveCheck(this)"><div class="info"><span class="nom">Prensa</span><div class="det">3x12 | <input type="number" class="input-peso" id="p2" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
         <div class="bloque-foco">
             <span class="etapa-header etapa-foco">Etapa 3: Espalda</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4x10 | <input type="number" class="input-peso" id="p3" onchange="save(this)" placeholder="0"> kg</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Remo Bajo</span><div class="det">3x12 | <input type="number" class="input-peso" id="p4" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c5" onchange="saveCheck(this)"><div class="info"><span class="nom">Tirón al Pecho</span><div class="det">4x10 | <input type="number" class="input-peso" id="p3" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c6" onchange="saveCheck(this)"><div class="info"><span class="nom">Remo Bajo</span><div class="det">3x12 | <input type="number" class="input-peso" id="p4" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
@@ -154,15 +176,15 @@
         <div class="dia-header">Piernas + Pecho</div>
         <div class="bloque-abs">
             <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Bicicleta</span><div class="det">3 x 30</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c7" onchange="saveCheck(this)"><div class="info"><span class="nom">Bicicleta</span><div class="det">3 x 30</div></div></div>
         </div>
         <div class="bloque-piernas">
             <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Estocadas</span><div class="det">3x12 | <input type="number" class="input-peso" id="p5" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c8" onchange="saveCheck(this)"><div class="info"><span class="nom">Estocadas</span><div class="det">3x12 | <input type="number" class="input-peso" id="p5" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
         <div class="bloque-foco">
             <span class="etapa-header etapa-foco">Etapa 3: Pecho</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Press Banca</span><div class="det">4x10 | <input type="number" class="input-peso" id="p6" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c9" onchange="saveCheck(this)"><div class="info"><span class="nom">Press Banca</span><div class="det">4x10 | <input type="number" class="input-peso" id="p6" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
@@ -170,37 +192,47 @@
         <div class="dia-header">Piernas + Brazos</div>
         <div class="bloque-abs">
             <span class="etapa-header etapa-abs">Etapa 1: Abdominales</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Lumbares</span><div class="det">3 x 15</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c10" onchange="saveCheck(this)"><div class="info"><span class="nom">Lumbares</span><div class="det">3 x 15</div></div></div>
         </div>
         <div class="bloque-piernas">
             <span class="etapa-header etapa-piernas">Etapa 2: Piernas</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3x12 | <input type="number" class="input-peso" id="p7" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c11" onchange="saveCheck(this)"><div class="info"><span class="nom">Sentadilla Goblet</span><div class="det">3x12 | <input type="number" class="input-peso" id="p7" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
         <div class="bloque-foco">
             <span class="etapa-header etapa-foco">Etapa 3: Brazos</span>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Bíceps Barra</span><div class="det">3x12 | <input type="number" class="input-peso" id="p8" onchange="save(this)" placeholder="0"> kg</div></div></div>
-            <div class="ejercicio"><input type="checkbox"><div class="info"><span class="nom">Tríceps Polea</span><div class="det">3x12 | <input type="number" class="input-peso" id="p9" onchange="save(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c12" onchange="saveCheck(this)"><div class="info"><span class="nom">Bíceps Barra</span><div class="det">3x12 | <input type="number" class="input-peso" id="p8" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
+            <div class="ejercicio"><input type="checkbox" id="c13" onchange="saveCheck(this)"><div class="info"><span class="nom">Tríceps Polea</span><div class="det">3x12 | <input type="number" class="input-peso" id="p9" onchange="savePeso(this)" placeholder="0"> kg</div></div></div>
         </div>
     </div>
 
-    <div id="timer-box">
-        <div id="time">01:00</div>
-        <button class="btn" onclick="toggleT()" id="btnT">START</button>
-        <button class="btn" style="background:#444; color:white;" onclick="resetT()">R</button>
+    <div id="clock-box">
+        <div id="clock-display">00:00:00</div>
     </div>
 
     <script>
-        // Guardar y Cargar Datos
-        function save(el) {
-            localStorage.setItem(el.id, el.value);
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-display').innerText = now.toLocaleTimeString('es-AR', {hour12:false});
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        function savePeso(el) { localStorage.setItem(el.id, el.value); }
+        function saveCheck(el) { localStorage.setItem(el.id, el.checked); }
+
+        function load() {
+            document.querySelectorAll('.input-peso').forEach(i => {
+                const s = localStorage.getItem(i.id); if (s) i.value = s;
+            });
+            document.querySelectorAll('input[type="checkbox"]').forEach(c => {
+                const s = localStorage.getItem(c.id); if (s) c.checked = (s === 'true');
+            });
         }
 
-        function loadSavedValues() {
-            const inputs = document.querySelectorAll('.input-peso');
-            inputs.forEach(input => {
-                const savedValue = localStorage.getItem(input.id);
-                if (savedValue) input.value = savedValue;
-            });
+        function clearAll() {
+            if(confirm("¿Seguro que querés resetear TODO (pesos y tildes)?")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
 
         function abrirDia(diaId, btn) {
@@ -210,26 +242,7 @@
             btn.classList.add('active');
         }
 
-        // Timer
-        let t = 60, id = null;
-        function upd() {
-            let m = Math.floor(t/60), s = t%60;
-            document.getElementById('time').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        }
-        function toggleT() {
-            if(id) { clearInterval(id); id = null; document.getElementById('btnT').innerText = "START"; }
-            else {
-                document.getElementById('btnT').innerText = "PAUSA";
-                id = setInterval(() => {
-                    if(t > 0) { t--; upd(); }
-                    else { clearInterval(id); id = null; alert("¡Serie terminada!"); resetT(); }
-                }, 1000);
-            }
-        }
-        function resetT() { clearInterval(id); id = null; t = 60; upd(); document.getElementById('btnT').innerText = "START"; }
-
-        // Inicializar al cargar
-        window.onload = loadSavedValues;
+        window.onload = load;
     </script>
 </body>
 </html>
